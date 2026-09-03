@@ -29,6 +29,14 @@ object SequenceCheck extends Properties("Sequence"):
         case (Nil(), f) =>  map(Nil())(f) == Nil()
         case (Cons(h, t), f) => map(Cons(h, t))(f) == Cons(f(h), map(t)(f))
 
+
+  property("sumAxioms") =
+    forAll: (seq: Sequence[Int]) =>
+      seq match
+        case Nil() => sum(Nil()) == 0
+        case Cons(h, t) => sum(Cons(h, t)) == h + sum(t)
+
+
   // how to check a generator works as expected
   @main def showSequences() =
     Range(0,20).foreach(i => println(summon[Arbitrary[Sequence[Int]]].arbitrary.sample))
