@@ -1,5 +1,7 @@
 package scala.lab04
 
+import scala.annotation.tailrec
+
 object Sequences:
   
   enum Sequence[E]:
@@ -26,6 +28,17 @@ object Sequences:
         case Cons(h, t) if pred(h) => Cons(h, t.filter(pred))
         case Cons(_, t)            => t.filter(pred)
         case Nil()                 => Nil()
+
+      @tailrec
+      def append(elem: Sequence[A]): Sequence[A] = s match
+        case Cons(h, Nil()) => Cons(h, elem)
+        case Cons(h, t) => t.append(elem)
+        case Nil() => elem
+
+      def flatMap[B](f: A => Sequence[B]): Sequence[B] = s match
+        case Cons(h, t) => f(h).append(t.flatMap(f))
+        case _ => Nil()
+
 
 @main def trySequences() =
   import Sequences.*

@@ -20,6 +20,10 @@ object SequenceCheck extends Properties("Sequence"):
   // define custom arbitrary lists and mappers
   given intSeqArbitrary: Arbitrary[Sequence[Int]] = Arbitrary(sequenceGen[Int]())
   given mapperArbitrary: Arbitrary[Int => Int] = Arbitrary(Gen.oneOf[Int => Int]( _+1, _*2, x => x*x))
+  given flatMapperArbitrary: Arbitrary[Int => Sequence[Int]] = Arbitrary(Gen.oneOf[Int => Sequence[Int]](
+    x => Cons(x+1, Nil()),
+    x => Cons(x*2, Nil()),
+    x => Cons(x*x, Nil())))
   given filterArbitrary: Arbitrary[Int => Boolean] = Arbitrary(Gen.oneOf[Int => Boolean]( _ == 1, _ % 2 == 0, _ >= 10))
 
   // check axioms, universally
@@ -43,6 +47,13 @@ object SequenceCheck extends Properties("Sequence"):
         case (Cons(h, t), f) if f(h) => filter(Cons(h, t))(f) == Cons(h, t.filter(f))
         case (Cons(h, t), f) => filter(Cons(h, t))(f) == t.filter(f)
         case (Nil(), f) => filter(Nil())(f) == Nil()
+
+
+  property("flatMapAxioms") =
+    forAll: (seq: Sequence[Int], f: Int => Sequence[Int]) =>
+      (seq, f) match
+        case (Cons(h, t), f) => flatMap(Cons(h, t))(f) == f(h).append(t.flatMap(f))
+        case (Nil(), f) => flatMap(Nil())(f ) == Nil()
 
   // how to check a generator works as expected
   @main def showSequences() =
