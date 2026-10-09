@@ -1,7 +1,6 @@
 package scala.u04.monads
 
-import org.scalacheck.Prop.forAll
-import org.scalacheck.{Arbitrary, Properties}
+import org.scalacheck.Properties
 import u04.monads.Monads.Monad
 
 abstract class MonadsLaws[F[_]](name: String)(using monad: Monad[F]) extends Properties(name):

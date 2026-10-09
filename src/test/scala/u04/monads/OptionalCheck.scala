@@ -4,7 +4,7 @@ import org.scalacheck.{Arbitrary, Gen}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Prop.forAll
 import u04.monads.Optionals.Optional
-import u04.monads.Optionals.Optional.{Empty, Just}
+import u04.monads.Optionals.Optional.Just
 
 
 object OptionalCheck extends MonadsLaws[Optional]("Optional"):

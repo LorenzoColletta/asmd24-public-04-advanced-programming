@@ -5,10 +5,6 @@ import org.scalacheck.{Arbitrary, Gen}
 import org.scalacheck.Arbitrary.arbitrary
 import u04.monads.Sequences.*
 import u04.monads.Sequences.Sequence
-import u04.monads.Sequences.Sequence.{Cons, Nil}
-import u04.monads.Monads.*
-
-import scala.u04.monads.SequenceCheck.sequenceGen
 
 object SequenceMonadCheck extends MonadsLaws[Sequence]("SequenceMonadLaws"):
   import Sequence.*
